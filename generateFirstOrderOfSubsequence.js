@@ -36,3 +36,12 @@ for (elem of data) {
 }
 
 console.log(sequence)
+
+// This is the output:
+/*
+[
+  { order: 1, x: 1, y: 7, character: 'r' },
+  { order: 5, x: 5, y: 8, character: 't' },
+  { order: 7, x: 6, y: 12, character: 'w' }
+]
+*/
