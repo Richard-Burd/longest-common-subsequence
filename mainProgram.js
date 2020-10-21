@@ -19,7 +19,7 @@ let data = [];
 
 // this iterates over the matrix and creates a location each time ther is a
 // an element (character) in both string1 (y-axis) and string2 (x-axis)
-function createLocations(){
+const createLocations = (() => {
   let iterX = 0;
 
   for (elemX of string1) {
@@ -31,15 +31,15 @@ function createLocations(){
           order: data.length + 1,
           x: iterX,
           y: iterY+1,
-          children: [],
 
-          // these values cannot be generated until all locations have been
+          // these 3 values cannot be generated until all locations have been
           // created by this function because they rely on the values above
-          childCount: 0,
-          totalChildrenCount: 0,
+          children: [], // populated in singleChildData function
+          childCount: 0, // value created by totalChildCounts function
+          totalChildrenCount: 0, // value created by totalChildCounts function
 
           // this is the character (number or letter) in the location that can
-          // be found in both string1 & string2 above
+          // be found in both string1 & string2
           character:elemX
         }
         data.push(newMatch)
@@ -47,9 +47,7 @@ function createLocations(){
       iterY++;
     }
   }
-}
-
-createLocations()
+})()
 
 function singleChildData(location){
   for (elem of data) {
@@ -63,15 +61,14 @@ function singleChildData(location){
   location.childCount = location.children.length
 }
 
-function allChildData(){
+// this function below calls the function above
+const allChildData = (() => {
   for (elem of data) {
     singleChildData(elem)
   }
-}
+})()
 
-allChildData()
-
-function totalChildCounts(){
+const totalChildCounts = (() => {
   for (let i = data.length - 1; i >= 0; i--){
     //console.log( `Order: ${data[i].order}`)
     //console.log( `Children: ${data[i].childCount}`)
@@ -93,17 +90,18 @@ function totalChildCounts(){
       // same result as the aforementioned textbook algorithm with this data set:
       // string1 = "zpeolgihjyxcrhelginh"
       // string2 = "qcvjtixcroplighigopleichdjkeup"
-      // answer for both: "ixcrlgih"
+      // the correct answer is: "ixcrlgih"
+      // but my algorithm produces: "plgiche" without this-------->* 4
       cumulations = cumulations + (data[elem-1].totalChildrenCount * 4)
     }
     data[i].totalChildrenCount += cumulations
     //console.log(`childCount: ${data[i].childCount}`)
     //console.log("\n")
   }
-}
+})()
 
-totalChildCounts()
-
+// this will hold the locations in order of their occurence in the longest
+// common subsequence; each location is a JSON object
 let sortedData = [];
 
 function highestTotalChildrenCount(startPoint){
@@ -140,7 +138,7 @@ function makeSortedDataSet(){
         break;
     }
   }
-  sortedData.pop(); // get rid of the undefined entry
+  sortedData.pop(); // get rid of the undefined entry at the end of the array
 }
 
 makeSortedDataSet()
@@ -154,5 +152,6 @@ function main(){
   return longestCommonSubsequence.join('')
 }
 
+// The program calls the main function above to execute the code
 console.log(main())
 // console.log(data)
