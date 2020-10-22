@@ -89,14 +89,14 @@ const totalDescendantCounts = (() => {
 // common subsequence; each location is a JSON object
 let sortedData = [];
 
-function highestTotalChildrenCount(startPoint){
+function highestTotalDescendantCount(startPoint){
   let value = startPoint.sort( function ( a, b ) {
     return b.progenyCensus - a.progenyCensus;
   } );
   sortedData.push(value[0])
 }
 
-highestTotalChildrenCount(data)
+highestTotalDescendantCount(data)
 
 function addToSortedData(location){
   let dataSubset = [];
@@ -111,7 +111,7 @@ function addToSortedData(location){
       dataSubset.push(thing);
     }
   }
-  highestTotalChildrenCount(dataSubset)
+  highestTotalDescendantCount(dataSubset)
 };
 
 function makeSortedDataSet(){
