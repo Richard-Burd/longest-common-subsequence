@@ -33,10 +33,10 @@ const createLocations = (() => {
           y: iterY+1,
 
           /*
-          these 2 values below (descendants & descendantsOfDescendents) cannot be generated until all locations have been created by the function (we're currently inside of) because each location must have a "locationOrder" value that in turn is later used to find the "descendants" below.  NOTE: DESCENDENTS EXPLAINED: Assuming a subsequence of "asdf", the 'd' and 'f' are descendants of 's' and 'a' - likewise, 's', 'd', and 'f' are all descendants of 'a' and 'a' is the ancestor of the other three characters because any character to the right is a descendant of any character to its left whereas any character to the left is an ancestor of any character to its right
+          these 2 values below (descendants & progenyCensus) cannot be generated until all locations have been created by the function (we're currently inside of) because each location must have a "locationOrder" value that in turn is later used to find the "descendants" below.  NOTE: DESCENDENTS EXPLAINED: Assuming a subsequence of "asdf", the 'd' and 'f' are descendants of 's' and 'a' - likewise, 's', 'd', and 'f' are all descendants of 'a' and 'a' is the ancestor of the other three characters because any character to the right is a descendant of any character to its left whereas any character to the left is an ancestor of any character to its right
           */
           descendants: [], // populated in descendantsForThisLocation function
-          descendantsOfDescendents: 1, // value created by totalChildCounts function
+          progenyCensus: 1, // value created by totalDescendantCounts function
 
           // this is the character (number or letter) in the location that can
           // be found in both string1 & string2
@@ -62,7 +62,6 @@ function descendantsForThisLocation(location){
     // "descendants" array of the ancestor location.
     location.descendants.push(elem.locationOrder)
   }
-  location.childCount = location.descendants.length
 }
 
 // this function below calls the function above; it iterates over each location
@@ -74,15 +73,15 @@ const descendantsForAllLocations = (() => {
   }
 })()
 
-const totalChildCounts = (() => {
+const totalDescendantCounts = (() => {
   for (let i = data.length - 1; i >= 0; i--){
     let cumulations = 0;
     for (elem of data[i].descendants) { // this cumulates the 'totalChidCount' values
 
-      // larger input strings may require an even larger multiplier----> * 8
-      cumulations = cumulations + (data[elem-1].descendantsOfDescendents * 8)
+      // larger input strings may require an even larger multiplier
+      cumulations = cumulations + (data[elem-1].progenyCensus * 8)
     }
-    data[i].descendantsOfDescendents += cumulations
+    data[i].progenyCensus += cumulations
   }
 })()
 
@@ -92,7 +91,7 @@ let sortedData = [];
 
 function highestTotalChildrenCount(startPoint){
   let value = startPoint.sort( function ( a, b ) {
-    return b.descendantsOfDescendents - a.descendantsOfDescendents;
+    return b.progenyCensus - a.progenyCensus;
   } );
   sortedData.push(value[0])
 }

@@ -42,8 +42,8 @@ const createLocations = (() => {
           // these 3 values cannot be generated until all locations have been
           // created by this function because they rely on the values above
           children: [], // populated in singleChildData function
-          childCount: 0, // value created by totalChildCounts function
-          totalChildrenCount: 0, // value created by totalChildCounts function
+          childCount: 0, // value created by totalDescendantCounts function
+          totalChildrenCount: 0, // value created by totalDescendantCounts function
 
           // this is the character (number or letter) in the location that can
           // be found in both string1 & string2
@@ -75,7 +75,7 @@ const allChildData = (() => {
   }
 })()
 
-const totalChildCounts = (() => {
+const totalDescendantCounts = (() => {
   for (let i = data.length - 1; i >= 0; i--){
     //console.log( `Order: ${data[i].order}`)
     //console.log( `Children: ${data[i].childCount}`)

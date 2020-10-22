@@ -64,7 +64,7 @@ function allChildData(){
 
 allChildData()
 
-function totalChildCounts(){
+function totalDescendantCounts(){
   for (let i = data.length - 1; i >= 0; i--){
     //console.log( `Order: ${data[i].order}`)
     //console.log( `Children: ${data[i].childCount}`)
@@ -84,7 +84,7 @@ function totalChildCounts(){
   }
 }
 
-totalChildCounts()
+totalDescendantCounts()
 
 let sortedData = [];
 
