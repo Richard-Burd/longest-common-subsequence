@@ -14,10 +14,10 @@ const string2 = "qzxwevrtbyrw";
 // the x-axis
 
 // this is the master collection of "locations" that is ordered according to
-// the locationOrder of their creation in createLocations() function below
+// the order of their creation in createLocations() below
 let data = [];
 
-// this iterates over the matrix and creates a location each time there is
+// this iterates over the matrix and creates a location each time ther is a
 // an element (character) in both string1 (y-axis) and string2 (x-axis)
 const createLocations = (() => {
   let iterX = 0;
@@ -25,74 +25,89 @@ const createLocations = (() => {
   for (elemX of string1) {
     let iterY = 0;
     iterX++;
-    for (elemY of string2) { // this creates the locations with JSON
+    for (elemY of string2) {
       if (elemX == elemY) {
-        let locationConstructor = {
-          locationOrder: data.length + 1,
+        let newMatch = {
+          order: data.length + 1,
           x: iterX,
           y: iterY+1,
 
-          /*
-          these 2 values below (descendants & descendantsOfDescendents) cannot be generated until all locations have been created by the function (we're currently inside of) because each location must have a "locationOrder" value that in turn is later used to find the "descendants" below.  NOTE: DESCENDENTS EXPLAINED: Assuming a subsequence of "asdf", the 'd' and 'f' are descendants of 's' and 'a' - likewise, 's', 'd', and 'f' are all descendants of 'a' and 'a' is the ancestor of the other three characters because any character to the right is a descendant of any character to its left whereas any character to the left is an ancestor of any character to its right
-          */
-          descendants: [], // populated in descendantsForThisLocation function
-          descendantsOfDescendents: 1, // value created by totalChildCounts function
+          // these 3 values cannot be generated until all locations have been
+          // created by this function because they rely on the values above
+          children: [], // populated in singleChildData function
+          //childCount: 0, // value created by totalChildCounts function
+          totalChildrenCount: 1, // value created by totalChildCounts function
 
           // this is the character (number or letter) in the location that can
           // be found in both string1 & string2
           character:elemX
         }
-        // this takes each new location and puts it in the data array
-        data.push(locationConstructor)
+        data.push(newMatch)
       }
       iterY++;
     }
   }
 })()
 
-// This finds all descendants for the location passed into this function
-function descendantsForThisLocation(location){
+function singleChildData(location){
   for (elem of data) {
     if (
       elem.x > location.x
       &&
       elem.y > location.y
     )
-    // descendants are tracked by pushing their locationOrder value into the
-    // "descendants" array of the ancestor location.
-    location.descendants.push(elem.locationOrder)
+    location.children.push(elem.order)
   }
-  location.childCount = location.descendants.length
+  location.childCount = location.children.length
 }
 
-// this function below calls the function above; it iterates over each location
-// in the matrix and asks each one to find its descendants by calling the
-// above "descendantsForThisLocation()" function
-const descendantsForAllLocations = (() => {
+// this function below calls the function above
+const allChildData = (() => {
   for (elem of data) {
-    descendantsForThisLocation(elem)
+    singleChildData(elem)
   }
 })()
 
 const totalChildCounts = (() => {
   for (let i = data.length - 1; i >= 0; i--){
+    //console.log( `Order: ${data[i].order}`)
+    //console.log( `Children: ${data[i].childCount}`)
+    //data[i].childCount = data[i].children.length
     let cumulations = 0;
-    for (elem of data[i].descendants) { // this cumulates the 'totalChidCount' values
+    // this cumulates the 'totalChidCount' values
+    for (elem of data[i].children) {
+      //console.log(elem)
+      //console.log(`Data location: ${data[elem-1].order}`)
 
-      // larger input strings may require an even larger multiplier----> * 8
-      cumulations = cumulations + (data[elem-1].descendantsOfDescendents * 8)
+      // this is the original algorithm I started with:
+      // cumulations += data[elem-1].totalChildrenCount
+
+      // after looking at discrepancies between the outputs produced by my
+      // code and the textbook dynamicProgrammingLCS solution available here:
+      // https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript
+      // I noticed that making the following change gave this algorithm the
+      // same result as the aforementioned textbook algorithm with this data set:
+      // string1 = "zpeolgihjyxcrhelginh"
+      // string2 = "qcvjtixcroplighigopleichdjkeup"
+      // the correct answer is: "ixcrlgih"
+      // but my algorithm produces: "plgiche" without multiplying by 4 (* 4) below
+      // with a multiplier of 8, this agorithm will work with (input) strings of
+      // up to 2oo characters------------------------------------> * 8
+      cumulations = cumulations + (data[elem-1].totalChildrenCount * 8)
     }
-    data[i].descendantsOfDescendents += cumulations
+    data[i].totalChildrenCount += cumulations
+    //console.log(`childCount: ${data[i].childCount}`)
+    //console.log("\n")
   }
 })()
 
-// this will hold the locations in locationOrder according their occurence in the longest
+// this will hold the locations in order of their occurence in the longest
 // common subsequence; each location is a JSON object
 let sortedData = [];
 
 function highestTotalChildrenCount(startPoint){
   let value = startPoint.sort( function ( a, b ) {
-    return b.descendantsOfDescendents - a.descendantsOfDescendents;
+    return b.totalChildrenCount - a.totalChildrenCount;
   } );
   sortedData.push(value[0])
 }
@@ -102,11 +117,11 @@ highestTotalChildrenCount(data)
 function addToSortedData(location){
   let dataSubset = [];
   location = sortedData[sortedData.length-1]
-  for (elem of location.descendants) {
+  for (elem of location.children) {
     //console.log(elem);
 
     let result = data.filter(obj => {
-      return obj.locationOrder == elem
+      return obj.order == elem
     })
     for (thing of result) {
       dataSubset.push(thing);
