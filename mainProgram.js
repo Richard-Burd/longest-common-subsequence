@@ -113,8 +113,6 @@ function addToSortedData(location){
     }
   }
   highestTotalChildrenCount(dataSubset)
-  //console.log(dataSubset);
-  //console.log(data[0])
 };
 
 function makeSortedDataSet(){
