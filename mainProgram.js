@@ -107,14 +107,14 @@ function addToSortedData(location){
     let result = data.filter(obj => {
       return obj.locationOrder == elem
     })
-    for (thing of result) {
-      dataSubset.push(thing);
+    for (locationObject of result) {
+      dataSubset.push(locationObject);
     }
   }
   highestTotalDescendantCount(dataSubset)
 };
 
-function makeSortedDataSet(){
+const makeSortedDataSet = (() => {
   while (true) {
     addToSortedData()
     if (sortedData[sortedData.length-1] == undefined) {
@@ -122,9 +122,7 @@ function makeSortedDataSet(){
     }
   }
   sortedData.pop(); // get rid of the undefined entry at the end of the array
-}
-
-makeSortedDataSet()
+})()
 
 function main(){
   longestCommonSubsequence = [];
