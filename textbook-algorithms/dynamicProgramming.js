@@ -42,5 +42,5 @@ function lcs(x,y){
 	return lcs.join('');
 }
 console.log(lcs(
-  "1234567890bmblhupbm9u8hbbukbhou7niuhbuk6njfhjidaodsvbnjcmpqzmaqlpxnsdjewicnfhubghjbuinhjbuplh5bubmkohbuk4mobhnj3hbiu2njbhup1lhmbkhounhbjuiuijhnbjufhuerso0djksaalksjds9dahihp",
-  "azvgaqyvaqgqy9vaqgw8sxwd7eccrgc6qpqaazamsxicnfdicbrfuvbhgurtvnmfjkeoicplmwoskdfjkdonvcjfiubhyguryfvgt5ycdvgde4ydeddv3c2gws1xvsgcdcefftrgtyvgyaqazvaqgysxwcderfvgrye1234567890"))
+  "rqvjtweyrztuyio",
+  "qzxwevrtbyrw"))
