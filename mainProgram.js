@@ -15,7 +15,7 @@ const string2 = "qzxwevrtbyrw";
 
 // this is the master collection of "locations" that is ordered according to
 // the locationOrder of their creation in createLocations() function below
-let data = [];
+let locations = [];
 
 // this iterates over the matrix and creates a location each time there is
 // an element (character) in both string1 (y-axis) and string2 (x-axis)
@@ -28,7 +28,7 @@ const createLocations = (() => {
     for (elemY of string2) { // this creates the locations with JSON
       if (elemX == elemY) {
         let locationConstructor = {
-          locationOrder: data.length + 1,
+          locationOrder: locations.length + 1,
           x: iterX,
           y: iterY+1,
 
@@ -42,8 +42,8 @@ const createLocations = (() => {
           // be found in both string1 & string2
           character:elemX
         }
-        // this takes each new location and puts it in the data array
-        data.push(locationConstructor)
+        // this takes each new location and puts it in the locations array
+        locations.push(locationConstructor)
       }
       iterY++;
     }
@@ -52,7 +52,7 @@ const createLocations = (() => {
 
 // This finds all descendants for the location passed into this function
 function descendantsForThisLocation(location){
-  for (elem of data) {
+  for (elem of locations) {
     if (
       elem.x > location.x
       &&
@@ -68,70 +68,70 @@ function descendantsForThisLocation(location){
 // in the matrix and asks each one to find its descendants by calling the
 // above "descendantsForThisLocation()" function
 const descendantsForAllLocations = (() => {
-  for (elem of data) {
+  for (elem of locations) {
     descendantsForThisLocation(elem)
   }
 })();
 
 const takeTheProgenyCensus = (() => {
-  for (let i = data.length - 1; i >= 0; i--){ // here we are iterating backwards
+  for (let i = locations.length - 1; i >= 0; i--){ // here we are iterating backwards
     let cumulations = 0;
-    for (elem of data[i].descendants) { // this cumulates the 'totalChidCount' values
+    for (elem of locations[i].descendants) { // this cumulates the 'totalChidCount' values
 
       // larger input strings may require an even larger multiplier that just 8
-      cumulations = cumulations + (data[elem-1].progenyCensus * 8)
+      cumulations = cumulations + (locations[elem-1].progenyCensus * 8)
     }
-    data[i].progenyCensus += cumulations
+    locations[i].progenyCensus += cumulations
   }
 })();
 
 // this will hold the locations in locationOrder according their occurence in the longest
 // common subsequence; each location is a JSON object
-let sortedData = [];
+let sortedLocations = [];
 
 // start with the location that has the highest progenyCensus value and only
 // examine descendants of that location...it is the "alpha" location and thus,
 // it is the first element in the longest common subsequence.
-function highestProgenyCensusValue(data){
-  let value = data.sort( function ( a, b ) {
+function highestProgenyCensusValue(locations){
+  let value = locations.sort( function ( a, b ) {
     return b.progenyCensus - a.progenyCensus;
   } );
-  sortedData.push(value[0])
+  sortedLocations.push(value[0])
 };
 
-highestProgenyCensusValue(data)
+highestProgenyCensusValue(locations)
 
 // ...now that the "alpha" location with the highest progenyCensus value is
-// alone in the sortedData array, go ahead and take all of the descendents of
+// alone in the sortedLocations array, go ahead and take all of the descendents of
 // that "alpha" location and repeat the process; the result will be the "beta"
 // location, or the second character in the longest common subsequence.
-function addToSortedData(location){
-  let dataSubset = [];
-  location = sortedData[sortedData.length-1]
+function addToSortedLocations(location){
+  let locationsSubset = [];
+  location = sortedLocations[sortedLocations.length-1]
   for (elem of location.descendants) {
-    let result = data.filter(obj => {
+    let result = locations.filter(obj => {
       return obj.locationOrder == elem
     });
     for (locationObject of result) {
-      dataSubset.push(locationObject);
+      locationsSubset.push(locationObject);
     }
   }
-  highestProgenyCensusValue(dataSubset)
+  highestProgenyCensusValue(locationsSubset)
 };
 
-const makeSortedDataSet = (() => {
+const makeSortedLocationsSet = (() => {
   while (true) {
-    addToSortedData()
-    if (sortedData[sortedData.length-1] == undefined) {
+    addToSortedLocations()
+    if (sortedLocations[sortedLocations.length-1] == undefined) {
         break;
     }
   }
-  sortedData.pop(); // get rid of the undefined entry at the end of the array
+  sortedLocations.pop(); // get rid of the undefined entry at the end of the array
 })();
 
 function main(){
   longestCommonSubsequence = [];
-  for (elem of sortedData){
+  for (elem of sortedLocations){
     //console.log(elem.character)
     longestCommonSubsequence.push(elem.character)
   }
@@ -139,5 +139,5 @@ function main(){
 }
 
 // The program calls the main function above to execute the code
-// console.log(sortedData)
+// console.log(sortedLocations)
 console.log(main())
