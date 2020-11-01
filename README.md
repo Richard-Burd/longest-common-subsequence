@@ -2,7 +2,7 @@
 A program to find the longest common subsequence (LCS) of two strings using JSON
 
 ## Task & Purpose
-The longest common subsequence (LCS) is an intriguing problem that has fascinated me for a while now; I am experimenting with new ways to graphically illustrate specific functions (as opposed to stack architecture) and thought I would use LCS as a case study for developing some new ideas in this area.&nbsp;  I attempted to replicate the capabilities of this algorithm [here](https://rosettacode.org/wiki/Longest_common_subsequence#JavaScript) that is labeled "**Dynamic Programming**."&nbsp;
+The longest common subsequence (LCS) is an intriguing problem that has fascinated me for a while now; I am experimenting with new ways to graphically illustrate specific functions (as opposed to stack architecture) and thought I would use LCS as a case study for developing some new ideas in this area.&nbsp;  I attempted to replicate the capabilities of this algorithm [here](https://rosettacode.org/wiki/Longest_common_subsequence#Dynamic_Programming_4) that is labeled "**Dynamic Programming**."&nbsp;
 
 ## Organization
 The file labeled `mainProgram.js` in the main directory of this repo contains the actual program whereas all other files are references, outdated examples, and other doodles I've been messing around with.  This program has a live REPL [here](https://repl.it/@Richard_Burd/Longest-Common-Subsequence#index.js) online as well.
