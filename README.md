@@ -12,7 +12,7 @@ This single script program is a collection of functions, many of them self-calli
 
 ## Cool Graphics
 Here is an illustration of the program and how it works:
-![a matrix with a software diagram](https://i.imgur.com/pOI0lvk.jpg)
+![a matrix with a software diagram](https://i.imgur.com/kXx053E.jpg)
 
 ## Notes to Self on GitHub Problems
 GitHub is acting funny lately; It looks like I must first create an empty repo online, then clone that empty repo to my local environment without first having created a README or description on the web browser interface.  I think it is relate to this change here because if I follow the process above I end up creating a new repo where I start out in the `(master)` branch whereas if I create a README file or repo description first, then when I clone the repo I see I am inside the  `(main)` branch, and then when I go to push I get an error that says: `src refspec master does not match any`&nbsp;  -this may be related to a [recent change GitHub implemented](https://www.zdnet.com/article/github-to-replace-master-with-main-starting-next-month/) as I haven't had this problem prior to October 2020.
