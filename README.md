@@ -1,6 +1,8 @@
 # Longest Common Subsequence
 A program to find the longest common subsequence (LCS) of two strings using JSON
 
+A detailed discussion of this project is available [here](https://richard-burd.github.io/longest_common_subsequence).
+
 ## Task & Purpose
 The longest common subsequence (LCS) is an intriguing problem that has fascinated me for a while now; I am experimenting with new ways to graphically illustrate specific functions (as opposed to stack architecture) and thought I would use LCS as a case study for developing some new ideas in this area.&nbsp;  I attempted to replicate the capabilities of this algorithm [here](https://rosettacode.org/wiki/Longest_common_subsequence#Dynamic_Programming_4) that is labeled "**Dynamic Programming**."&nbsp;
 
